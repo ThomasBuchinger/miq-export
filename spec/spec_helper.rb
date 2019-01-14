@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "miq_export"
+require "miq_flow_export"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    miq_export (0.1.0)
+    miq_flow_export (0.1.0)
       rugged (> 0.20.0)
 
 GEM
@@ -46,7 +46,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.17)
-  miq_export!
+  miq_flow_export!
   rake (~> 10.0)
   rspec (~> 3.0)
   rubocop

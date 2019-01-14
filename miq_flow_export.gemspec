@@ -1,17 +1,17 @@
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "miq_export/version"
+require "miq_flow_export/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "miq_export"
-  spec.version       = MiqExport::VERSION
+  spec.name          = "miq_flow_export"
+  spec.version       = MiqFlowExport::VERSION
   spec.authors       = ["Thomas Buchinger"]
   spec.email         = ["thomas.buchinger@outlook.com"]
 
   spec.summary       = %q{ManageIQ Domain export helper. This is a companion to MiqFlow}
-  spec.description   = %q{This script focuses on exporting ManageIQ Domains to git, withoutt undoing changes on master since the last export}
-  spec.homepage      = "https://github.com/ThomasBuchinger/miq-export"
+  spec.description   = %q{This script focuses on exporting ManageIQ Domains to git, without undoing changes on master since the last export}
+  spec.homepage      = "https://github.com/ThomasBuchinger/miq-flow-export"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
@@ -19,8 +19,8 @@ Gem::Specification.new do |spec|
     spec.metadata["allowed_push_host"] = ""
 
     spec.metadata["homepage_uri"] = spec.homepage
-    spec.metadata["source_code_uri"] = "https://github.com/ThomasBuchinger/miq-export"
-    spec.metadata["changelog_uri"] = "https://github.com/ThomasBuchinger/miq-export/CHANGELOG.md"
+    spec.metadata["source_code_uri"] = "https://github.com/ThomasBuchinger/miq-flow-export"
+    spec.metadata["changelog_uri"] = "https://github.com/ThomasBuchinger/miq-flow-export/CHANGELOG.md"
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
       "public gem pushes."

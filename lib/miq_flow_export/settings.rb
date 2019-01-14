@@ -1,4 +1,4 @@
-module MiqExport
+module MiqFlowExport
   module Settings
     def self.set_defaults(settings={})
       # Working stuff

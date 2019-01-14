@@ -1,11 +1,8 @@
 require 'time'
 require 'rugged'
 require 'logger'
-require 'miq_export/version'
-require 'miq_export/settings'
-require 'miq_export/mixin_git'
 
-module MiqExport
+module MiqFlowExport
   extend GitMixin
 
   Error = Class.new(StandardError)
@@ -67,7 +64,7 @@ module MiqExport
     favor = :theirs if strategy == 'recursive' && prefer == :theis
     if strategy != 'recursive' && prefer.nil?
       $logger.error('Only recursive sraegies implemened. Aboring while I can')
-      raise MiqExpor::Error, "Strategy #{strategy} not implmented"
+      raise MiqFlowExport::Error, "Strategy #{strategy} not implmented"
     end
 
     return $git_repo.merge_commits(master, devel, favor: favor, rename: rename)

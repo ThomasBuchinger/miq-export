@@ -1,4 +1,4 @@
-module MiqExport
+module MiqFlowExport
   module GitMixin
 
     def find_repo(path, dir)

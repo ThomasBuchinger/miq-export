@@ -1,6 +1,6 @@
-RSpec.describe MiqExport do
+RSpec.describe MiqFlowExport do
   it "has a version number" do
-    expect(MiqExport::VERSION).not_to be nil
+    expect(MiqFlowExport::VERSION).not_to be nil
   end
 
   it "does something useful" do
