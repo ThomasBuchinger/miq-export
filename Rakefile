@@ -2,7 +2,6 @@ require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 require 'miq_flow_export'
-#Dir.glob('tasks/*.rake').each { |r| load r}
 
 RSpec::Core::RakeTask.new(:spec)
 RuboCop::RakeTask.new()
@@ -36,6 +35,7 @@ task :remove => [:clone] do
   config = get_config()
   MiqFlowExport.switch_branch(config[:release_branch])
   $git_repo.branches.delete(config[:work_branch]) if $git_repo.branches.exists?(config[:work_branch])
+  $git_repo.branches.delete(config[:conflict_branch]) if $git_repo.branches.exists?(config[:conflict_branch])
 end
 
 desc 'Package ansible module'

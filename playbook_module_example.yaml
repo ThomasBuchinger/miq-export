@@ -1,0 +1,39 @@
+- hosts: localhost
+  vars:
+    add_tags:
+      - DEV
+    git_repo: https://github.com/ThomasBuchinger/automate-example.git
+  tasks:
+  - name: 'Create working directory'
+    tempfile:
+      state: directory
+      suffix: miq_export
+    register: tmp_dir
+  - debug: var=tmp_dir
+
+  - name: Remove temporary git objecs from previous runs
+    miq_flow_export:
+      action: remove
+      export_dir: "{{ tmp_dir.path }}"
+      
+  - name: Prepare git repo for the export
+    miq_flow_export:
+      action: prep
+      export_dir: "{{ tmp_dir.path }}"
+
+  # =================
+  # Export
+  - name: Export stuff
+    shell: "echo '# {{ edit }}' >> automate/buc/Infrastructure/Host/Operations/Methods.class/__methods__/host_evacuation.rb"
+    args:
+      chdir: "{{ tmp_dir.path }}/automate-example"
+  - name: Commit export
+    command: "git commit -a -m 'AUTO EXPORT {{ edit }}'"
+    args:
+      chdir: "{{ tmp_dir.path }}/automate-example"
+  # =================
+
+  - name: Merge export with master
+    miq_flow_export:
+      action: merge  
+      export_dir: "{{ tmp_dir.path }}"

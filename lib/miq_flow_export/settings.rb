@@ -40,5 +40,12 @@ module MiqFlowExport
       settings
     end
 
+    def self.update_settings(settings={}, new_settings={})
+      new_settings.each do |key, value|
+        settings[key.to_sym] = value
+      end
+      settings
+    end
+
   end
 end
