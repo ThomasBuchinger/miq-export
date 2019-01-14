@@ -42,11 +42,11 @@ desc 'Package ansible module'
 task :ansible do
   ANSIBLE_MODULE = 'pkg/miq_flow_export.rb'
   files = [
-    'lib/miq_export/version.rb',
-    'lib/miq_export/mixin_git.rb',
-    'lib/miq_export/settings.rb',
-    'lib/miq_export/exporter.rb',
-    'lib/miq_export/ansible.rb'
+    'lib/miq_flow_export/version.rb',
+    'lib/miq_flow_export/mixin_git.rb',
+    'lib/miq_flow_export/settings.rb',
+    'lib/miq_flow_export/exporter.rb',
+    'lib/miq_flow_export/ansible.rb'
   ]
   sh "echo '#!/bin/env ruby' > #{ANSIBLE_MODULE}"
   puts "Copy files: #{files.join(', ')}"
@@ -55,4 +55,6 @@ task :ansible do
   end
   chmod(0755, ANSIBLE_MODULE)
 end
+task :build => [:ansible]
+
 task :default => :spec
