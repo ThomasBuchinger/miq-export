@@ -14,7 +14,7 @@ module MiqFlowExport
       # commit message for the merge commit
       settings[:message] = "Automatic export #{Time.now.iso8601(0)}"
       settings[:author]  = 'ghost'
-      settings[:mail]    = 'ghost@graveyard.rip' 
+      settings[:mail]    = 'ghost@graveyard.rip'
 
       # git stuff
       #
@@ -46,6 +46,5 @@ module MiqFlowExport
       end
       settings
     end
-
   end
 end

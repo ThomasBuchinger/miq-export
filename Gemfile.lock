@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    miq_flow_export (0.1.0)
+    miq_flow_export (0.1.1)
       rugged (> 0.20.0)
 
 GEM
