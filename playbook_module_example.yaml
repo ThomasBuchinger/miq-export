@@ -37,3 +37,8 @@
     miq_flow_export:
       action: merge  
       export_dir: "{{ tmp_dir.path }}"
+
+  - name: Import merged Code
+    command: 'git tag -f LAST_EXPORT'
+    args:
+      chdir: "{{ tmp_dir.path }}/automate-example"
