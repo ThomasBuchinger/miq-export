@@ -45,7 +45,7 @@ rescue JSON::ParserError
   STDERR.puts('Invalid JSON arguments')
 rescue MiqFlowExport::Error => err
   puts generate_ansible_output(changed: false, msg: err.to_s, failed: true)
-rescue NoMethodError
-  msg = 'Invalid action. Must be: clone, prep, merge or remove'
-  puts generate_ansible_output(changed: false, msg: msg, failed: true)
+#rescue NoMethodError
+#  msg = 'Invalid action. Must be: clone, prep, merge or remove'
+#  puts generate_ansible_output(changed: false, msg: msg, failed: true)
 end

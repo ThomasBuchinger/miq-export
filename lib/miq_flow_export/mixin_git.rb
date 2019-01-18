@@ -24,9 +24,9 @@ module MiqFlowExport
 
       favor = :normal if strategy == 'recursive' && prefer.nil?
       favor = :ours   if strategy == 'recursive' && prefer == :ours
-      favor = :theirs if strategy == 'recursive' && prefer == :theis
+      favor = :theirs if strategy == 'recursive' && prefer == :theirs
       if strategy != 'recursive' && prefer.nil?
-        $logger.error('Only recursive sraegies implemened. Aboring while I can')
+        $logger.error('Only recursive strategies implemented. Aborting while I can')
         raise MiqFlowExport::Error, "Strategy #{strategy} not implmented"
       end
 
@@ -38,15 +38,16 @@ module MiqFlowExport
       tags.each{ |tag| $git_repo.references.update("refs/tags/#{tag}", target) }
     end
 
-    def create_commit(index, master, devel, empty: false, message: 'AUTO export', author: 'ghost', mail: 'ghost@graveyard.org', time: Time.now, **_)
+    def create_commit(index, parents, empty: false, message: 'AUTO export', author: 'ghost', mail: 'ghost@graveyard.org', time: Time.now, **_)
       user = { name: author, email: mail, time: time }
       tree = index.write_tree($git_repo)
+      parents = [ parents ].flatten.map{|commit|  commit.oid}
       commit_opts = {
         message: message,
         author: user,
         committer: user,
         update_ref: 'HEAD',
-        parents: [master.oid, devel.oid],
+        parents: parents,
         tree: tree
       }
       # create an empty commit

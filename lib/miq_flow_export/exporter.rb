@@ -38,23 +38,71 @@ module MiqFlowExport
     $git_repo.checkout(branch_name)
   end
 
-  def self.merge(release, work, _tag_name:, additional_tags: [], prefer: 'export', fast_forward: 'no', **opts)
+  def self.process_merge_opts(release, work, *opts)
+    opts = {}
+    opts[:master_name] = release
+    opts[:devel_name] = work
+    opts[:master_commit] = $git_repo.branches[release].target
+    opts[:devel_commit] = $git_repo.branches[work].target
+
+    prefer = args[:prefer] || 'export'
+    favor_export = prefer == 'export'
+    opts[:strategy] = 'recursive'
+    opts[:release_favor] = favor_export ? :their : :ours
+    opts[:conflict_favor] = favor_export ? :ours : :theirs
+
+    fast_forward
+    opts[:fast_forward] = fast_forward == 'yes'
+    opts[:allow_empty] = !opts[:fast_forward]
+
+    opts[:additional_tags] = args[:a]
+
+    return opts
+  end
+
+  
+
+  def self.merge(release, work, tag_name: '', additional_tags: [], prefer: 'export', fast_forward: 'no', **opts)
     $logger.info 'merge'
-    master = $git_repo.branches[release].target
-    devel  = $git_repo.branches[work].target
-    favor  = prefer == 'export' ? :theirs : :ours
-    empty  = !(fast_forward == 'yes') # logic reversal!
+    #options  = precess_merge_options(release )
+    master  = $git_repo.branches[release].target
+    devel   = $git_repo.branches[work].target
+    favor   = prefer == 'export' ? :theirs : :ours
+    c_favor = prefer == 'export' ? :ours : :theirs
+    empty   = !(fast_forward == 'yes') # logic reversal!
 
     # try o merge with default settings
     index = create_index(release, work, opts.merge(strategy: 'recursive', prefer: nil))
 
     if index.conflicts?
       $logger.error('Conflict occured while merging')
+      
+      c_branch = add_conflict_branch()
+      c_index = create_index(release, work, opts.merge(strategy: 'recursive', prefer: :ours))
+
+      $logger.warn('PRE: conflict commit')
+      c_commit = create_commit(c_index, c_branch.target, opts)
+      update_ref(heads: [c_branch.name], tags: [], target: c_commit)
+
+      #master = $git_repo.branches[release].target
+      index = create_index(release, work, opts.merge(strategy: 'recursive', prefer: :theirs))
     else
       $logger.info('Merged without conflict \o/')
-      commit = create_commit(index, master, devel, opts.merge(empty: empty))
-      $git_repo.checkout_head()
-      update_ref(heads: [release, work], tags: additional_tags, target: commit)
     end
+
+    # update master
+      $logger.warn('PRE: master commit')
+    commit = create_commit(index, [master, devel], opts.merge(empty: empty))
+    $git_repo.checkout_head()
+    update_ref(heads: [release, work], tags: additional_tags, target: commit)
+    
+  end
+
+  def self.deal_with_conflict
+  
+  end
+
+  def self.add_conflict_branch()
+    create_branch('tmp_conflict', 'LAST_EXPORT')
   end
 end
